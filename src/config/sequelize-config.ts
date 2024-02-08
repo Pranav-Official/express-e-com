@@ -1,6 +1,6 @@
-const Sequelize = require("sequelize");
+import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize({
+export const sequelize = new Sequelize({
   database: "e_commerce",
   username: "root",
   password: "experion@123",
@@ -8,4 +8,4 @@ const sequelize = new Sequelize({
   dialect: "mysql",
 });
 
-module.exports = sequelize;
+export default sequelize;

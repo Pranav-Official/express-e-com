@@ -1,8 +1,7 @@
-const express = require("express");
-const sequelize = require("./config/sequelize-config");
-const ec_suppliers = require("./models/ec_suppliers");
-
-const app = express();
+import express, { Express, Request, Response } from "express";
+import sequelize from "./config/sequelize-config";
+import EcSuppliers from "./models/ec_suppliers";
+const app: Express = express();
 
 app.use(express.json());
 
@@ -11,11 +10,11 @@ sequelize
   .then(() => {
     console.log("Connection has been established successfully.");
   })
-  .catch((error) => {
+  .catch((error: any) => {
     console.error("Unable to connect to the database:", error);
   });
 
-app.post("/supplierRegistration", async (req, res) => {
+app.post("/supplierRegistration", async (req: Request, res: Response) => {
   if (
     !req.body.full_name ||
     !req.body.e_mail ||
@@ -27,7 +26,7 @@ app.post("/supplierRegistration", async (req, res) => {
   }
   try {
     const { full_name, e_mail, password, profile_pic } = req.body;
-    const supplier = await ec_suppliers.create(
+    const supplier = await EcSuppliers.create(
       {
         full_name,
         e_mail,
@@ -37,13 +36,13 @@ app.post("/supplierRegistration", async (req, res) => {
       { raw: true }
     );
     res.status(200).json({ registration_id: supplier.registration_id });
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
     res.status(400).send("Error");
   }
 });
 
-app.post("/login", async (req, res) => {
+app.post("/login", async (req: Request, res: Response) => {
   if (!req.body.e_mail || !req.body.password || !req.body.user_type) {
     res.status(400).send("All fields are required");
     return;
@@ -51,7 +50,7 @@ app.post("/login", async (req, res) => {
   if (req.body.user_type === "supplier") {
     try {
       const { e_mail, password } = req.body;
-      const supplier = await ec_suppliers.findOne({
+      const supplier = await EcSuppliers.findOne({
         where: { e_mail, password },
         raw: true,
       });
@@ -60,14 +59,14 @@ app.post("/login", async (req, res) => {
       } else {
         res.status(400).send("Invalid credentials");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       res.status(400).send("Error");
     }
   }
 });
 
-app.get("/profile", async (req, res) => {
+app.get("/profile", async (req: Request, res: Response) => {
   if (!req.body.registration_id || !req.body.user_type) {
     res.status(400).send("All fields are required");
     return;
@@ -75,7 +74,7 @@ app.get("/profile", async (req, res) => {
   if (req.body.user_type === "supplier") {
     try {
       const { registration_id } = req.body;
-      const supplier = await ec_suppliers.findOne({
+      const supplier = await EcSuppliers.findOne({
         where: { registration_id },
         raw: true,
       });
@@ -84,14 +83,14 @@ app.get("/profile", async (req, res) => {
       } else {
         res.status(400).send("Invalid credentials");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       res.status(400).send("Error");
     }
   }
 });
 
-app.patch("/passwordReset", async (req, res) => {
+app.patch("/passwordReset", async (req: Request, res: Response) => {
   console.log(req.body);
   if (!req.body.e_mail || !req.body.new_password || !req.body.user_type) {
     res.status(400).send("All fields are required");
@@ -101,7 +100,7 @@ app.patch("/passwordReset", async (req, res) => {
   if (req.body.user_type === "supplier") {
     try {
       const { e_mail, new_password } = req.body;
-      const supplier = await ec_suppliers.update(
+      const supplier = await EcSuppliers.update(
         { password: new_password },
         { where: { e_mail } }
       );
@@ -110,7 +109,7 @@ app.patch("/passwordReset", async (req, res) => {
       } else {
         res.status(400).send("Invalid credentials");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       res.status(400).send("Error");
     }
