@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import sequelize from "./config/sequelize-config";
 import supplierRoutes from "./routes/supplierRoutes";
+import { verifyJWT } from "./middlewere/verifyJWT";
 
 import indexRoutes from "./routes/index";
 const app: Express = express();
@@ -9,7 +10,7 @@ app.use(express.json());
 // app.use();
 
 app.use(indexRoutes);
-app.use("/api/v1", supplierRoutes);
+app.use("/api/v1", verifyJWT, supplierRoutes);
 
 sequelize
   .sync({ force: false })
