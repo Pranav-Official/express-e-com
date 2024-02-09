@@ -1,6 +1,7 @@
 import { DataTypes, Sequelize } from "sequelize";
 import sequelize from "../config/sequelize-config"; // Import the Sequelize instance
 import { EcSuppliers } from "../../types/modelTypes/ec_suppliers";
+import bcrypt from "bcrypt";
 
 EcSuppliers.init(
   {
@@ -53,6 +54,13 @@ EcSuppliers.init(
     modelName: "ec_suppliers",
     tableName: "ec_suppliers",
     timestamps: false,
+    hooks: {
+      beforeCreate: async (supplier: EcSuppliers) => {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(supplier.password, salt);
+        supplier.password = hashedPassword;
+      },
+    },
   }
 );
 
