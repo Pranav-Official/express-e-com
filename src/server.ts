@@ -1,15 +1,16 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import sequelize from "./config/sequelize-config";
 import supplierRoutes from "./routes/supplierRoutes";
+import adminRoutes from "./routes/adminRoutes";
 import { verifyJWT } from "./middlewere/verifyJWT";
 
 import indexRoutes from "./routes/index";
+import verifyJWTadmin from "./middlewere/verifyJWTadmin";
 const app: Express = express();
 app.use(express.json());
 
-// app.use();
-
 app.use(indexRoutes);
+app.use(verifyJWTadmin, adminRoutes);
 app.use("/api/v1", verifyJWT, supplierRoutes);
 
 sequelize

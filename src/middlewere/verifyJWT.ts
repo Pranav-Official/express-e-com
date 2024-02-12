@@ -7,7 +7,7 @@ export const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
     return res.status(401).json({ message: "Unauthorized" });
   }
   const authHeader =
-    req.headers.authorization || (req.headers.Authorization as string);
+    req.headers.authorization ?? (req.headers.Authorization as string);
   if (!authHeader?.startsWith("Bearer ")) {
     return res.status(401).json({ message: "Unauthorized" });
   }

@@ -1,5 +1,4 @@
 import { Request, Response, Router } from "express";
-import EcSuppliers from "../models/ec_suppliers";
 import { login } from "../controllers/authentication/login";
 import { registration } from "../controllers/authentication/registration";
 import { passwordReset } from "../controllers/authentication/passwordReset";
