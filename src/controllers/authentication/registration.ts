@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import EcSuppliers from "../../models/ec_suppliers";
+import Customers from "../../models/customers";
 
 export const registration = async (req: Request, res: Response) => {
   if (
@@ -25,6 +26,24 @@ export const registration = async (req: Request, res: Response) => {
         { raw: true }
       );
       res.status(200).json({ registration_id: supplier.registration_id });
+    } catch (err: any) {
+      console.log(err);
+      res.status(400).send("Error");
+    }
+  }
+  if (req.body.user_type === "customer") {
+    try {
+      const { full_name, e_mail, password, profile_pic } = req.body;
+      const customers = await Customers.create(
+        {
+          full_name,
+          e_mail,
+          password,
+          profile_pic,
+        },
+        { raw: true }
+      );
+      res.status(200).json({ registration_id: customers.registration_id });
     } catch (err: any) {
       console.log(err);
       res.status(400).send("Error");

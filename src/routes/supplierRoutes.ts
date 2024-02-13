@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import EcSuppliers from "../models/ec_suppliers";
+import Customers from "../models/customers";
 import { CheckXApi } from "../middlewere/checkXApi";
 
 const router = Router();
@@ -21,6 +22,26 @@ router.get("/profile", CheckXApi, async (req: Request, res: Response) => {
       });
       if (supplier) {
         res.status(200).json(supplier);
+      } else {
+        res.status(400).send("Invalid credentials");
+      }
+    } catch (err: any) {
+      console.log(err);
+      res.status(400).send("Error");
+    }
+  }
+  if (req.body.user_type === "customer") {
+    try {
+      const { registration_id } = req.body;
+      const customer = await Customers.findOne({
+        where: { registration_id },
+        attributes: {
+          exclude: ["password", "createdAt", "updatedAt"],
+        },
+        raw: true,
+      });
+      if (customer) {
+        res.status(200).json(customer);
       } else {
         res.status(400).send("Invalid credentials");
       }

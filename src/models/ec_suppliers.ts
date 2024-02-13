@@ -28,15 +28,25 @@ EcSuppliers.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    subsription_plan_id: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     registration_id: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: () => Math.floor(Math.random() * 90000 + 10000).toString(),
+      defaultValue: () =>
+        Math.floor(Math.random() * 900000 + 100000).toString(),
     },
     registration_time_stamp: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      defaultValue: 10000, // Set the initial value to 10000
+      get() {
+        // Custom getter to convert registration_id to string
+        const rawValue = this.getDataValue("registration_id");
+        return rawValue < 10000 ? "" : String(rawValue); // Ensuring no IDs below 10000
+      },
     },
     createdAt: {
       type: DataTypes.DATE,
