@@ -2,6 +2,8 @@ import { Request, Response, Router } from "express";
 import EcSuppliers from "../models/ec_suppliers";
 import Customers from "../models/customers";
 import { CheckXApi } from "../middlewere/checkXApi";
+import addProducts from "../controllers/products/addProducts";
+import addBulkProducts from "../controllers/products/addBulkProducts";
 
 const router = Router();
 
@@ -51,5 +53,18 @@ router.get("/profile", CheckXApi, async (req: Request, res: Response) => {
     }
   }
 });
+
+router.post("/addProducts", CheckXApi, async (req: Request, res: Response) => {
+  console.log(req.body);
+  addProducts(req, res);
+});
+router.post(
+  "/addBulkProducts",
+  CheckXApi,
+  async (req: Request, res: Response) => {
+    console.log(req.body);
+    addBulkProducts(req, res);
+  }
+);
 
 export default router;
