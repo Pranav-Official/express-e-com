@@ -13,7 +13,7 @@ export const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
   }
   const token = authHeader.split(" ")[1];
   jwt.verify(token, "my-secret-key", (err: any, decoded: any) => {
-    if (err) return res.status(403).json({ message: "Forbidden" });
+    if (err) return res.status(403).json({ err });
     if (req.body.registration_id !== decoded.registration_id) {
       return res.status(401).json({ message: "Unauthorized" });
     }

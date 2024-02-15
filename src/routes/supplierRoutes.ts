@@ -4,6 +4,7 @@ import Customers from "../models/customers";
 import { CheckXApi } from "../middlewere/checkXApi";
 import addProducts from "../controllers/products/addProducts";
 import addBulkProducts from "../controllers/products/addBulkProducts";
+import getProducts from "../controllers/products/getProducts";
 
 const router = Router();
 
@@ -54,17 +55,18 @@ router.get("/profile", CheckXApi, async (req: Request, res: Response) => {
   }
 });
 
-router.post("/addProducts", CheckXApi, async (req: Request, res: Response) => {
+router.post("/addProducts", async (req: Request, res: Response) => {
   console.log(req.body);
   addProducts(req, res);
 });
-router.post(
-  "/addBulkProducts",
-  CheckXApi,
-  async (req: Request, res: Response) => {
-    console.log(req.body);
-    addBulkProducts(req, res);
-  }
-);
+router.post("/addBulkProducts", async (req: Request, res: Response) => {
+  console.log(req.body);
+  addBulkProducts(req, res);
+});
+
+router.post("/getProducts", async (req: Request, res: Response) => {
+  console.log(req.body);
+  getProducts(req, res);
+});
 
 export default router;
