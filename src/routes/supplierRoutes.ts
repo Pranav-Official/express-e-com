@@ -5,6 +5,7 @@ import { CheckXApi } from "../middlewere/checkXApi";
 import addProducts from "../controllers/products/addProducts";
 import addBulkProducts from "../controllers/products/addBulkProducts";
 import getProducts from "../controllers/products/getProducts";
+import setInvites from "../controllers/subcription_plans/setInvites";
 
 const router = Router();
 
@@ -67,6 +68,11 @@ router.post("/addBulkProducts", async (req: Request, res: Response) => {
 router.post("/getProducts", async (req: Request, res: Response) => {
   console.log(req.body);
   getProducts(req, res);
+});
+
+router.post("/setInvites", async (req: Request, res: Response) => {
+  console.log(req.body);
+  setInvites(req, res);
 });
 
 export default router;
