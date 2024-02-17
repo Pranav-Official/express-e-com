@@ -22,9 +22,9 @@ app.use(customerRoutes);
 app.use("/api/v1", verifyJWT, supplierRoutes);
 
 connectToMongoDb();
-disconnectFromMongoDb();
+
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => {
     console.log("Connection has been established successfully.");
   })

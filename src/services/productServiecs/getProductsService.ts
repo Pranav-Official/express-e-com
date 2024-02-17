@@ -9,6 +9,7 @@ export const getProductService = async (req: Request, res: Response) => {
   const sortBy = req.query.sort;
   const searchTerm = req.query.searchTerm;
   const searchRegex = new RegExp(searchTerm as string, "i");
+  const categoryFilter = req.query.categoryFilter;
 
   let sortQuery: Sort = {};
   if (sortBy) {
@@ -19,11 +20,18 @@ export const getProductService = async (req: Request, res: Response) => {
     }
   }
 
-  let searchQuery = {};
+  let searchQuery = {
+    $or: [{}],
+    $and: [{}],
+  };
   if (searchTerm) {
     searchQuery = {
       $or: [{ product_name: searchRegex }, { product_category: searchRegex }],
+      $and: [{}],
     };
+  }
+  if (categoryFilter) {
+    searchQuery.$and = [{ product_category: categoryFilter }];
   }
 
   const skip = (page - 1) * limit;
